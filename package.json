@@ -1,0 +1,40 @@
+{
+  "name": "acme-content-mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node src/build.js && npx @tailwindcss/cli -i styles/input.css -o dist/styles.css --minify",
+    "start": "node server.js",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bubazombie/acme-content-mvp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Bubazombie/acme-content-mvp/issues"
+  },
+  "homepage": "https://github.com/Bubazombie/acme-content-mvp#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "marked": "^18.0.13",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "esbuild": "^0.28.2",
+    "supertest": "^7.2.2",
+    "tailwindcss": "^4.3.3",
+    "vitest": "^5.0.1"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "@parcel/watcher@2.5.1": true
+  }
+}
