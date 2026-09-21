@@ -1,7 +1,7 @@
 {
   "name": "acme-content-mvp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Static content MVP that turns Markdown files into pages, built for Acme Co.'s marketing team.",
   "main": "index.js",
   "scripts": {
     "build": "node src/build.js && npx @tailwindcss/cli -i styles/input.css -o dist/styles.css --minify",
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/Bubazombie/acme-content-mvp.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Bubazombie",
   "license": "ISC",
   "type": "module",
   "bugs": {
