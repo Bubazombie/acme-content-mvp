@@ -66,7 +66,6 @@ Hosted on Render, connected directly to this GitHub repository. Every push to `m
 A few honest ideas for where this could go next, roughly in order of value:
 
 - Run `npm test` automatically on every push via GitHub Actions, instead of only locally.
-- Add a favicon (currently missing, so the browser logs a harmless 404 for `/favicon.ico`).
 - A simple listing page for the blog, since right now a visitor needs to already know a post's exact URL to reach it.
 - Basic validation of `content/` at build time (e.g. warn if an `index.md` is missing required front matter, once front matter is introduced), so a marketing team member gets a clear error instead of a silently broken page.
 - A `content` watch mode for local development, so the site rebuilds automatically while editing Markdown, instead of needing to rerun `npm run build` by hand.
