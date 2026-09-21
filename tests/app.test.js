@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import request from "supertest";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildSite } from "../src/build.js";
@@ -70,5 +71,19 @@ describe("nested routing", () => {
     const res = await request(app).get("/sample-page");
     expect(res.status).not.toBe(301);
     expect(res.headers.location).toBeUndefined();
+  });
+});
+
+describe("buildSite (unit)", () => {
+  it("returns one route per content folder, including nested ones", async () => {
+    const routes = await buildSite(fixtureContentDir, fixtureDistDir);
+    expect(routes).toContain("/sample-page");
+    expect(routes).toContain("/blog/updates/first-post");
+  });
+
+  it("writes an index.html file at the correct nested path in dist", async () => {
+    await buildSite(fixtureContentDir, fixtureDistDir);
+    const nestedFile = join(fixtureDistDir, "blog", "updates", "first-post", "index.html");
+    expect(existsSync(nestedFile)).toBe(true);
   });
 });
