@@ -2,7 +2,7 @@
   "name": "acme-content-mvp",
   "version": "1.0.0",
   "description": "Static content MVP that turns Markdown files into pages, built for Acme Co.'s marketing team.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "node src/build.js && npx @tailwindcss/cli -i styles/input.css -o dist/styles.css --minify",
     "start": "node server.js",
