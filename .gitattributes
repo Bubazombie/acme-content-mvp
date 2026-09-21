@@ -1,1 +1,5 @@
-.githooks/commit-msg text eol=lf
+# Normalize line endings to LF everywhere, so behavior stays identical
+# across Windows, macOS and Linux (this matters in particular for
+# .githooks/commit-msg, which needs LF to run as a shell script on
+# non-Windows systems).
+* text=auto eol=lf
