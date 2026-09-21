@@ -1,4 +1,4 @@
-import { readdirSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, mkdirSync, readFileSync, writeFileSync, existsSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { marked } from "marked";
@@ -24,6 +24,21 @@ function findContentFolders(dir, base = "") {
   return folders;
 }
 
+function copyPublicAssets(publicDir, distDir) {
+  if (!existsSync(publicDir)) return;
+  const entries = readdirSync(publicDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = join(publicDir, entry.name);
+    const destPath = join(distDir, entry.name);
+    if (entry.isDirectory()) {
+      mkdirSync(destPath, { recursive: true });
+      copyPublicAssets(srcPath, destPath);
+    } else {
+      copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 export async function buildSite(contentDir, distDir) {
   const cacheDir = join(distDir, "..", ".build-cache");
   await esbuild.build({
@@ -39,6 +54,7 @@ export async function buildSite(contentDir, distDir) {
   );
 
   mkdirSync(distDir, { recursive: true });
+  copyPublicAssets(join(contentDir, "..", "public"), distDir);
   const routes = findContentFolders(contentDir);
 
   for (const route of routes) {

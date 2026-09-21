@@ -7,6 +7,7 @@ export default function Page({ contentHtml }) {
         <meta charSet="utf-8" />
         <title>Welcome to Acme</title>
         <link rel="stylesheet" href="/styles.css" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
       <body className="min-h-screen bg-[#EEF1F4]">
         <header className="bg-[#1c2b45] px-6 py-5">
