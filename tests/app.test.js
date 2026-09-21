@@ -40,3 +40,35 @@ describe("path traversal protection", () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe("nested routing", () => {
+  it("returns 200 and the right content for a URL two levels deep", async () => {
+    const res = await request(app).get("/blog/updates/first-post");
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("<h1>First Post</h1>");
+  });
+
+  it("returns 404 for the root URL, since no content folder maps to it", async () => {
+    const res = await request(app).get("/");
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 404 for an intermediate folder that has no index.md of its own", async () => {
+    const res = await request(app).get("/blog/updates");
+    expect(res.status).toBe(404);
+  });
+
+  it("serves the same page whether the URL ends in a slash or not", async () => {
+    const withoutSlash = await request(app).get("/sample-page");
+    const withSlash = await request(app).get("/sample-page/");
+    expect(withoutSlash.status).toBe(200);
+    expect(withSlash.status).toBe(200);
+    expect(withSlash.text).toBe(withoutSlash.text);
+  });
+
+  it("never returns an automatic redirect for a valid content URL", async () => {
+    const res = await request(app).get("/sample-page");
+    expect(res.status).not.toBe(301);
+    expect(res.headers.location).toBeUndefined();
+  });
+});
