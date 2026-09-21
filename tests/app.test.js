@@ -33,3 +33,10 @@ describe("content pages", () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe("path traversal protection", () => {
+  it("does not serve files outside the dist directory via a relative path escape", async () => {
+    const res = await request(app).get("/../escape-target");
+    expect(res.status).toBe(404);
+  });
+});
