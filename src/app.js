@@ -7,6 +7,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export function createApp(distDir) {
   distDir = resolve(distDir);
+  const notFoundPath = join(distDir, "404.html");
   const app = express();
   app.use(express.static(distDir, { index: false, redirect: false }));
   app.use((req, res) => {
@@ -15,6 +16,8 @@ export function createApp(distDir) {
 
     if (isInsideDistDir && existsSync(pagePath)) {
       res.status(200).sendFile(pagePath);
+    } else if (existsSync(notFoundPath)) {
+      res.status(404).sendFile(notFoundPath);
     } else {
       res.status(404).send("Not found");
     }

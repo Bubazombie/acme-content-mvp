@@ -87,3 +87,13 @@ describe("buildSite (unit)", () => {
     expect(existsSync(nestedFile)).toBe(true);
   });
 });
+
+describe("not found page", () => {
+  it("returns a styled 404 page that links to every available page", async () => {
+    const res = await request(app).get("/this-page-does-not-exist");
+    expect(res.status).toBe(404);
+    expect(res.text).toContain("<h1>Page not found</h1>");
+    expect(res.text).toContain('href="/sample-page"');
+    expect(res.text).toContain('href="/blog/updates/first-post"');
+  });
+});

@@ -39,6 +39,25 @@ function copyPublicAssets(publicDir, distDir) {
   }
 }
 
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderNotFoundContent(routes) {
+  const links = routes
+    .map((route) => '<li><a href="' + encodeURI(route) + '">' + escapeHtml(route) + "</a></li>")
+    .join("");
+  return (
+    "<h1>Page not found</h1>" +
+    "<p>The page you requested does not exist. These are the pages currently available:</p>" +
+    "<ul>" + links + "</ul>"
+  );
+}
+
 export async function buildSite(contentDir, distDir) {
   const cacheDir = join(distDir, "..", ".build-cache");
   await esbuild.build({
@@ -57,16 +76,18 @@ export async function buildSite(contentDir, distDir) {
   copyPublicAssets(join(contentDir, "..", "public"), distDir);
   const routes = findContentFolders(contentDir);
 
+  const renderPage = (contentHtml) =>
+    "<!doctype html>" +
+    renderToStaticMarkup(React.createElement(Page, { contentHtml }));
+
   for (const route of routes) {
     const markdown = readFileSync(join(contentDir, route, "index.md"), "utf-8");
-    const contentHtml = marked.parse(markdown);
-    const pageHtml =
-      "<!doctype html>" +
-      renderToStaticMarkup(React.createElement(Page, { contentHtml }));
     const outDir = join(distDir, route);
     mkdirSync(outDir, { recursive: true });
-    writeFileSync(join(outDir, "index.html"), pageHtml);
+    writeFileSync(join(outDir, "index.html"), renderPage(marked.parse(markdown)));
   }
+
+  writeFileSync(join(distDir, "404.html"), renderPage(renderNotFoundContent(routes)));
   return routes;
 }
 
